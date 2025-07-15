@@ -16,27 +16,30 @@ const Results = ({ results, inputs }) => {
   const differenceLabel = "Difference in Final Value" + (adjustForInflation ? " (Real)" : "");
 
   return (
-    <div className="space-y-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
-        <SummaryCard title={`${scenario1Name}${labelSuffix}`} value={currencyFormatter.format(finalBalance1)} />
-        <SummaryCard title={`${scenario2Name}${labelSuffix}`} value={currencyFormatter.format(finalBalance2)} />
-        <SummaryCard title={differenceLabel} value={currencyFormatter.format(finalDifference)} color="text-indigo-600" />
+    <div className="bg-surface-card p-6 rounded-xl border border-primary mt-8">
+      <h2 className="text-3xl font-bold text-text-DEFAULT text-center mb-8">Your Results</h2>
+      <div className="space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
+          <SummaryCard title={`${scenario1Name}${labelSuffix}`} value={currencyFormatter.format(finalBalance1)} />
+          <SummaryCard title={`${scenario2Name}${labelSuffix}`} value={currencyFormatter.format(finalBalance2)} />
+          <SummaryCard title={differenceLabel} value={currencyFormatter.format(Math.abs(finalBalance2 - finalBalance1))} color="text-primary" />
+        </div>
+        <GrowthChart
+          schedule1={displaySchedule1}
+          schedule2={displaySchedule2}
+          years={investmentTerm}
+          isAdjusted={adjustForInflation}
+          name1={`${scenario1Name} (${rate1}%)`}
+          name2={`${scenario2Name} (${rate2}%)`}
+        />
+        <GrowthTable
+          schedule1={displaySchedule1}
+          schedule2={displaySchedule2}
+          isAdjusted={adjustForInflation}
+          name1={scenario1Name}
+          name2={scenario2Name}
+        />
       </div>
-      <GrowthChart
-        schedule1={displaySchedule1}
-        schedule2={displaySchedule2}
-        years={investmentTerm}
-        isAdjusted={adjustForInflation}
-        name1={`${scenario1Name} (${rate1}%)`}
-        name2={`${scenario2Name} (${rate2}%)`}
-      />
-      <GrowthTable
-        schedule1={displaySchedule1}
-        schedule2={displaySchedule2}
-        isAdjusted={adjustForInflation}
-        name1={scenario1Name}
-        name2={scenario2Name}
-      />
     </div>
   );
 };

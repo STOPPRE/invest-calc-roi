@@ -32,6 +32,19 @@ export function calculateRealValue(nominalSchedule, annualInflationRate) {
     });
 }
 
+export const formatNumberWithCommas = (value) => {
+  if (value === null || value === undefined || value === '') return '';
+  const stringValue = String(value);
+  const parts = stringValue.split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return parts.join('.');
+};
+
+export const parseFormattedNumber = (stringValue) => {
+  if (typeof stringValue !== 'string') return stringValue;
+  return stringValue.replace(/,/g, '');
+};
+
 export const currencyFormatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',

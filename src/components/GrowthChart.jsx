@@ -24,7 +24,7 @@ const GrowthChart = ({ schedule1, schedule2, years, isAdjusted, name1, name2 }) 
       {
         label: name1,
         data: getYearlyData(schedule1),
-        borderColor: '#2563eb', // primary
+        borderColor: '#2563EB', // primary.DEFAULT
         backgroundColor: 'rgba(37, 99, 235, 0.1)',
         fill: true,
         tension: 0.3,
@@ -32,7 +32,7 @@ const GrowthChart = ({ schedule1, schedule2, years, isAdjusted, name1, name2 }) 
       {
         label: name2,
         data: getYearlyData(schedule2),
-        borderColor: '#f97316', // accent
+        borderColor: '#F97316', // secondary.DEFAULT
         backgroundColor: 'rgba(249, 115, 22, 0.1)',
         fill: true,
         tension: 0.3,
@@ -44,6 +44,12 @@ const GrowthChart = ({ schedule1, schedule2, years, isAdjusted, name1, name2 }) 
     responsive: true,
     maintainAspectRatio: false,
     scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Years',
+        },
+      },
       y: {
         beginAtZero: true,
         ticks: { callback: (value) => currencyFormatter.format(value) },
@@ -66,7 +72,7 @@ const GrowthChart = ({ schedule1, schedule2, years, isAdjusted, name1, name2 }) 
   };
 
   return (
-    <div className="bg-surface p-6 rounded-xl shadow-md">
+    <div className="bg-background p-6 rounded-lg">
       <h3 className="text-2xl font-bold mb-4 text-center text-text font-heading">Investment Growth Over Time</h3>
       <div className="relative h-96 w-full">
         <Line data={data} options={options} />

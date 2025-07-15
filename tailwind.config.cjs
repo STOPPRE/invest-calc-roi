@@ -7,18 +7,28 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary:      '#2563eb',
-        primaryLight: '#93c5fd',
-        primaryDark:  '#1e40af',
-        accent:   '#f97316',
-        success:  '#22c55e',
-        danger:   '#ef4444',
-        text:         '#1f2937',
-        textLight:    '#4b5563',
-        surface:      '#ffffff',
-        surfaceDark:  '#111827',
-        glass: 'rgba(255,255,255,.1)',
-        ring:   'rgba(37, 99, 235, .4)',
+        primary: {
+          DEFAULT: '#2563EB', // blue-600
+          light: '#60A5FA',   // blue-400
+          dark: '#1D4ED8',    // blue-700
+        },
+        secondary: {
+          DEFAULT: '#F97316', // orange-500
+        },
+        text: {
+          DEFAULT: '#1F2937', // gray-800
+          light: '#6B7280',   // gray-500
+        },
+        surface: {
+          DEFAULT: '#FFFFFF',
+          card: '#FFFFFF',
+        },
+        background: {
+          DEFAULT: '#F9FAFB', // gray-50
+        },
+        border: {
+          DEFAULT: '#E5E7EB', // gray-200
+        },
       },
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui'],

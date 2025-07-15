@@ -1,38 +1,59 @@
 import { useState, useMemo } from 'react';
-import Header from './components/Header';
 import InputForm from './components/InputForm';
 import Results from './components/Results';
 import GrowthChart from './components/GrowthChart';
 import GrowthTable from './components/GrowthTable';
 import SummaryCard from './components/SummaryCard';
-import { calculateNominalGrowth, calculateRealValue } from './utils/calculations';
+import { calculateNominalGrowth, calculateRealValue, parseFormattedNumber } from './utils/calculations';
 
 function App() {
   const [inputs, setInputs] = useState({
-    initialInvestment: 1000,
-    monthlyContribution: 200,
-    investmentTerm: 20,
+    initialInvestment: '',
+    monthlyContribution: '',
+    investmentTerm: '',
     adjustForInflation: false,
     inflationRate: 3,
     scenario1Name: 'Scenario 1',
-    rate1: 5,
+    rate1: '',
     scenario2Name: 'Scenario 2',
-    rate2: 8,
+    rate2: '',
   });
 
   const [submittedInputs, setSubmittedInputs] = useState(null);
 
   const handleInputChange = (e) => {
     const { id, value, type, checked } = e.target;
+    const fieldsToFormat = ['initialInvestment', 'monthlyContribution'];
+
+    let processedValue;
+
+    if (type === 'checkbox') {
+      processedValue = checked;
+    } else if (fieldsToFormat.includes(id)) {
+      processedValue = parseFormattedNumber(value);
+    } else {
+      processedValue = value;
+    }
+
     setInputs(prevInputs => ({
       ...prevInputs,
-      [id]: type === 'checkbox' ? checked : type === 'number' && value !== '' ? parseFloat(value) : value,
+      [id]: processedValue,
     }));
     setSubmittedInputs(null);
   };
 
   const handleCalculate = () => {
-    setSubmittedInputs(inputs);
+    // When calculating, parse all numeric string values to floats
+    const parsedInputs = Object.entries(inputs).reduce((acc, [key, value]) => {
+      const numericKeys = ['initialInvestment', 'monthlyContribution', 'investmentTerm', 'rate1', 'rate2', 'inflationRate'];
+      if (numericKeys.includes(key) && typeof value === 'string') {
+        acc[key] = parseFloat(parseFormattedNumber(value)) || 0;
+      } else {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
+    setSubmittedInputs(parsedInputs);
   };
 
   const resultsData = useMemo(() => {
@@ -52,7 +73,6 @@ function App() {
   return (
     <div className="bg-gray-50 text-text font-sans">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-        <Header />
         <main className="py-8 sm:py-12 lg:py-16">
           <InputForm
             inputs={inputs}
@@ -62,7 +82,7 @@ function App() {
           {resultsData && (
             <Results
               results={resultsData}
-              inputs={inputs}
+              inputs={submittedInputs}
             />
           )}
         </main>
